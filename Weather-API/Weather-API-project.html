@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-image: url('https://wallpapers.com/images/hd/weather-scenarios-collage-dbk9c5n23l7e5fgb.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    h1 {
+        color: white;
+        margin-left: 450px;
+        margin-top: 20px;
+        font-size: 3rem;
+    }
+
+    form {
+        margin-top: 10px;
+        margin-left: 570px;
+    }
+
+    .place {
+        width: 30%;
+        height: 25px;
+        border-radius: 5px;
+        margin-left: -50px;
+        border: none;
+        border-style: none;
+    }
+
+    button {
+        width: 60px;
+        height: 25px;
+        margin-left: 5px;
+        border-radius: 5px;
+
+
+    }
+
+    .cardcontainer {
+        width: 90%;
+        height: auto;
+        max-width: 350px;
+        margin-top: 30px;
+        color: white;
+        font-family: cursive;
+        border: 3px solid rgb(215, 212, 212);
+        margin-left: 450px;
+        /* background-color: rgba(96, 239, 244, 0.448); */
+        border-radius: 20px;
+        background-color: black;
+        display: none;
+
+
+    }
+
+    p {
+        margin-top: 15px;
+        margin-left: 70px;
+        margin-bottom: 20px;
+        font-size: 1rem;
+}
+
+
+   
+
+    h2 {
+        margin-top: 15px;
+        color: aqua;
+        font-size: 3rem;
+        margin-left: 70px;
+        text-shadow: 2px 2px red;
+}
+
+    
+</style>
+
+<body>
+    <h1>Weather Search API </h1>
+    <form>
+        <input type="text" placeholder=" Search City Name " class="place" id="userInput">
+        <button class="weather">Enter</button>
+    </form>
+    <div class="cardcontainer"> </div>
+
+</body>
+<script>
+    let form = document.querySelector('form ')
+    let container = document.querySelector('.cardcontainer')
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let api = '57756d2f8aeab5037d4ae62ada758eff';
+
+        async function API() {
+
+            try {
+
+                let select = document.getElementById('userInput').value;
+                console.log(select)
+
+                let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${select}&appid=${api}&units=metric`)
+                let finalres = await res.json()
+
+                container.style.display = 'block'
+
+                let countryname = finalres.name
+                let country = finalres.sys.country
+                let Temperature = finalres.main.temp
+                let weather = finalres.weather[0].description
+                let humidity = finalres.main.humidity
+                let windSpeed = finalres.wind.speed
+
+
+
+                container.innerHTML = ` 
+                       
+                                 <h2>${countryname}, ${country}</h2>
+                                 <p>🌡️Temperature : ${Temperature} °C</p>
+                                 <p> ☁️Weather : ${weather}</p>
+                                <p> 💧Humidity : ${humidity}%</p>
+                                <p> 💨Wind Speed : ${windSpeed} m/s</p>
+                       
+               `
+
+            } catch (error) {
+
+                let wrong = 'This Is Wrong location'
+                container.textContent = wrong
+            }
+        }
+
+        API()
+    })
+
+
+
+
+
+
+
+</script>
